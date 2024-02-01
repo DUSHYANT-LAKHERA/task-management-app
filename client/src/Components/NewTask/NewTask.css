@@ -24,7 +24,11 @@
     height: 150px;
     border-radius: 10px;
     border: unset;
+    cursor: pointer;
+
 }
+
+
 
 .task-save {
     padding: 10px;
@@ -33,9 +37,11 @@
     border: unset;
     background: #9186ff;
     box-shadow: 0px 0px 5px #5C5696;
+    cursor: pointer;
 
 }
-.btn-container{
+
+.btn-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,6 +49,7 @@
     gap: 11px;
 
 }
+
 .back-btnn {
     padding: 10px;
     border-radius: 5px;
@@ -50,6 +57,8 @@
     border: unset;
     background: #9186ff;
     box-shadow: 0px 0px 5px #5C5696;
+    cursor: pointer;
+
 
 }
 
@@ -57,4 +66,6 @@
     padding: 10px;
     border-radius: 5px;
     font-size: 14px;
+    cursor: pointer;
+
 }

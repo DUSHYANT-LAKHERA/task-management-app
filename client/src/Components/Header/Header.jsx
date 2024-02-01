@@ -15,6 +15,11 @@ const Header = () => {
     }
     // localStorage.getItem("token")
 
+    const handleLogoutPage = () => {
+        localStorage.clear()
+        navigate("/auth/login")
+
+    }
     return (
         <div className="header">
             <div className='logo_img'>
@@ -24,8 +29,13 @@ const Header = () => {
                 <button className='header_btn' onClick={handleHome}>Home</button>
                 {!localStorage.getItem("token") &&
                     <>
-                    <button className='header_btn' onClick={handleLoginPage}>Log in </button>
-                    <button className='header_btn' onClick={handleSingUpPage}>Sign Up</button>
+                        <button className='header_btn' onClick={handleLoginPage}>Log in </button>
+                        <button className='header_btn' onClick={handleSingUpPage}>Sign Up</button>
+                    </>
+                }
+                {localStorage.getItem("token") &&
+                    <>
+                        <button className='header_btn' onClick={handleLogoutPage}>Logout</button>
                     </>
                 }
             </div>

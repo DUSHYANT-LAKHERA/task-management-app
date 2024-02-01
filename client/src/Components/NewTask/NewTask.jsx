@@ -12,10 +12,10 @@ const NewTask = () => {
     const { id } = useParams()
     const [searchParams] = useSearchParams()
     const viewOnly = !!searchParams.get("view-only")
-    const task = useSelector(state => state.task.tasks.find(i=>i._id===id))
+    const task = useSelector(state => state.task.tasks.find(i => i._id === id))
     const navigate = useNavigate()
-    const [newTask, setNewTask] = useState(task?.description||"")
-    const [priority, setpriority] = useState(task?.priority||"")
+    const [newTask, setNewTask] = useState(task?.description || "")
+    const [priority, setpriority] = useState(task?.priority || "")
 
     const dispatch = useDispatch()
     const handleInput = (e) => {
@@ -24,10 +24,11 @@ const NewTask = () => {
     }
 
     const handleSave = () => {
-        socket.emit(ClientEvents.TASK_CREATE,{description:newTask,priority})
+        socket.emit(ClientEvents.TASK_CREATE, { description: newTask, priority })
+
     }
     const handleUpdate = () => {
-        socket.emit(ClientEvents.TASK_UPDATE,{taskId:task._id,description:newTask,priority})
+        socket.emit(ClientEvents.TASK_UPDATE, { taskId: task._id, description: newTask, priority })
 
     }
 
@@ -40,70 +41,73 @@ const NewTask = () => {
         setpriority(inputValue)
     }
     useEffect(() => {
-      
-setNewTask(task?.description||"")
-setpriority(task?.priority||"")
-      return () => {
-        
-      }
+
+        setNewTask(task?.description || "")
+        setpriority(task?.priority || "")
+        return () => {
+
+        }
     }, [task])
-    
+
     useEffect(() => {
         socket.on(ServerEvents.TASK_ADDED, (args) => {
             if (args?._id) {
                 dispatch(appendTask(args))
                 setpriority("")
                 setNewTask("")
+                navigate("/add-list")
                 toast.success("Task Created")
-          }
+            }
         })
-         socket.on(ServerEvents.TASK_UPDATED, (args) => {
+        socket.on(ServerEvents.TASK_UPDATED, (args) => {
             if (args?.status) {
                 dispatch(appendTask(args.task))
                 toast.success(args.message)
-          }
-      })
+                navigate("/add-list")
+
+            }
+        })
         return () => {
-          socket.off(ServerEvents.TASK_ADDED)
-          socket.off(ServerEvents.TASK_UPDATED)
-      }
+            socket.off(ServerEvents.TASK_ADDED)
+            socket.off(ServerEvents.TASK_UPDATED)
+        }
     }, [socket])
     return (
         <div className='main-container-add-task'>
             <div className='add-task'>
 
-                {id && !task ? <span className='header-tag'>Task Not Found</span> :<>
-                    <span className='header-tag'>{viewOnly? "View ":id ? "Update " : "Add "} Task</span>
+                {id && !task ? <span className='header-tag'>Task Not Found</span> : <>
+                    <span className='header-tag'>{viewOnly ? "View " : id ? "Update " : "Add "} Task</span>
 
-                <textarea readOnly={viewOnly} value={newTask} onChange={handleInput} className='Disp-box' />
+                    <textarea readOnly={viewOnly} value={newTask} onChange={handleInput} className='Disp-box' />
 
                     <select
-                    aria-readonly={viewOnly}
-                    className="box_selection"
-                    value={priority}
-                    onChange={handlepriority}
+                        aria-readonly={viewOnly}
+                        className="box_selection"
+                        value={priority}
+                        onChange={handlepriority}
                     >
-                    <option value="">Select Priority</option>
-                    <option value="1">High</option>
-                    <option value="2">Medium</option>
-                    <option value="3">Low</option>
-                </select>
+                        <option value="">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
                     <div className='btn-container'>
                         {
-                          !viewOnly&&  <>
-                    { !id && <button onClick={handleSave} className='task-save'>
-                        Save Task
-                    </button>}
-                    {id && <button onClick={handleUpdate} className='task-save'>
-                        Update
-                    </button>}
+                            !viewOnly && <>
+                                {!id && <button onClick={handleSave} className='task-save'>
+                                    Save Task
+                                </button>}
+                                {id && <button onClick={handleUpdate} className='task-save'>
+                                    Update
+                                </button>}
                             </>
                         }
-                    <button onClick={handleBack} className='back-btnn'>
-                        Back to home
-                    </button>
+                        <button onClick={handleBack} className='back-btnn'>
+                            Back to home
+                        </button>
                     </div>
-                    </>
+                </>
                 }
             </div>
         </div>

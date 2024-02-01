@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema({
     required: true,
   },
   priority: {
-    type: mongoose.Schema.Types.Number,
+    type: mongoose.Schema.Types.String,
     required: true,
   }
 }, {
